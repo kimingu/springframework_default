@@ -44,6 +44,7 @@ public class BoardController {
     // model에 db에서 가져온 BoardDTO객체로 받아옴 addAttribute로 모델에 담아줌
     @GetMapping
     public String findById(@RequestParam("id") Long id,Model model){
+        System.out.println("여기가 board?");
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("board",boardDTO);
@@ -54,6 +55,25 @@ public class BoardController {
         boardService.delete(id);
 
         return "redirect:/board/";
+    }
+
+    @GetMapping("/update")
+    public String updateForm(@RequestParam("id") Long id, Model model){
+        BoardDTO boardDTO = boardService.findById(id);
+        model.addAttribute("board",boardDTO);
+        return "update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute BoardDTO boardDTO, Model model){
+        boardService.update(boardDTO);
+        BoardDTO dto = boardService.findById(boardDTO.getId());
+        model.addAttribute("board",dto);
+        return "detail";
+
+        // redirect 경우 findById 컨트롤러를 타서 값을 로직을 타는 형식
+        // 그냥 retutn "detail"; => 이 방식은 jsp로 그냥 값을 모델에 넣어서 뿌려줌 즉 findById를 안타기 때문에 조회수 증가x
+        //return "redirect:/board?id="+boardDTO.getId();
     }
 
 }
