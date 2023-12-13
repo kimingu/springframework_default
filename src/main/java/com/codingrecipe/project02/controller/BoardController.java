@@ -80,8 +80,12 @@ public class BoardController {
     // /board/paging?page=2
     // 처음 페이지 요청은 1페이지를 보여줌
     @GetMapping("/paging")
-    public String paging(Model model,@RequestParam(value = "page", required = false, defaultValue = "1") int page){
+    public String paging(Model model,@RequestParam(value = "page", required = false, defaultValue = "1") int page){ // 파라미터가 없다면 1
         System.out.println("page = " + page);
+
+        //해당 페이지에서 보여줄 글 목록
+        List<BoardDTO> pagingList = boardService.pagingList(page);
+        System.out.println("pagingLst = " + pagingList);
         return "index";
     }
 
