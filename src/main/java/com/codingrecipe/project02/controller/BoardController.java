@@ -33,6 +33,7 @@ public class BoardController {
 
     @GetMapping("/")
     public String findAll(Model model){
+        System.out.println("여기가 리스트?");
         List<BoardDTO> boardDTOList = boardService.findAll();
         model.addAttribute("boardList",boardDTOList);
         return "list";
@@ -44,7 +45,7 @@ public class BoardController {
     // model에 db에서 가져온 BoardDTO객체로 받아옴 addAttribute로 모델에 담아줌
     @GetMapping
     public String findById(@RequestParam("id") Long id,Model model){
-        System.out.println("여기가 board?");
+        System.out.println("여기가 board? 디테일?");
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("board",boardDTO);
@@ -74,6 +75,14 @@ public class BoardController {
         // redirect 경우 findById 컨트롤러를 타서 값을 로직을 타는 형식
         // 그냥 retutn "detail"; => 이 방식은 jsp로 그냥 값을 모델에 넣어서 뿌려줌 즉 findById를 안타기 때문에 조회수 증가x
         //return "redirect:/board?id="+boardDTO.getId();
+    }
+
+    // /board/paging?page=2
+    // 처음 페이지 요청은 1페이지를 보여줌
+    @GetMapping("/paging")
+    public String paging(Model model,@RequestParam(value = "page", required = false, defaultValue = "1") int page){
+        System.out.println("page = " + page);
+        return "index";
     }
 
 }
