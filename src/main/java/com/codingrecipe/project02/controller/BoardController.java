@@ -1,6 +1,7 @@
 package com.codingrecipe.project02.controller;
 
 import com.codingrecipe.project02.dto.BoardDTO;
+import com.codingrecipe.project02.dto.PageDTO;
 import com.codingrecipe.project02.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -86,7 +87,12 @@ public class BoardController {
         //해당 페이지에서 보여줄 글 목록
         List<BoardDTO> pagingList = boardService.pagingList(page);
         System.out.println("pagingLst = " + pagingList);
-        return "index";
+
+        PageDTO pageDTO = boardService.pagingParam(page);
+        model.addAttribute("boardList", pagingList);
+        model.addAttribute("paging", pageDTO);
+
+        return "paging";
     }
 
 }
